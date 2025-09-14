@@ -1,4 +1,4 @@
-#include "systemcalls.h"
+#include "systemcalls.h" 
 
 /**
  * @param cmd the command to execute with system()
@@ -17,7 +17,11 @@ bool do_system(const char *cmd)
  *   or false() if it returned a failure
 */
 
-    return true;
+	int ret = system(cmd);
+	if (ret == -1){
+		return false;
+	}
+        return true;
 }
 
 /**
@@ -59,6 +63,26 @@ bool do_exec(int count, ...)
  *
 */
 
+    int status;
+    pid_t pid_wait;
+    pid_t pid = fork();
+    if (pid == -1){
+	    perror("fork");
+    }
+    if (pid == 0){
+	int ret = execv(command[0], command);
+	if (ret == -1){
+		perror("execv");
+		exit(EXIT_FAILURE);
+	}
+
+    }else {
+	    pid_wait = wait(&status);
+	    if (pid_wait == 1){
+		    perror("wait");
+	    }
+    }
+
     va_end(args);
 
     return true;
@@ -92,6 +116,22 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+
+    pid_t pid = fork();
+    if (pid == -1){perror("fork");}
+    if (pid == 0){
+   	 
+	 int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+   	 if (fd == -1){perror("open");}
+	 
+	 if (dup2(fd,1)<0){ perror("dup2");}
+	 close(fd);
+	 execv(command[0], command);
+    }else {
+	   pid_t pid_wait = wait(&status);
+	   if (pid_wait == -1){ perror("wait");}
+    }
+
 
     va_end(args);
 
