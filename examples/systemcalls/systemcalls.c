@@ -121,7 +121,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
-
+    int status;
     pid_t pid = fork();
     if (pid == -1){perror("fork");}
     if (pid == 0){
