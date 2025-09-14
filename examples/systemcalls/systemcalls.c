@@ -85,12 +85,13 @@ bool do_exec(int count, ...)
 	    pid_wait = wait(&status);
 	    if (pid_wait == 1){
 		    perror("wait");
+		    return false;
 	    }
     }
 
     va_end(args);
 
-    return true;
+    return WIFEXITED(status) && WEXITSTATUS(status) == 0;
 }
 
 /**
@@ -136,10 +137,11 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     }else {
 	   pid_t pid_wait = wait(&status);
 	   if (pid_wait == -1){ perror("wait");}
+	   return false;
     }
 
 
     va_end(args);
 
-    return true;
+    return WIFEXITED(status) && WEXITSTATUS(status) == 0;
 }
