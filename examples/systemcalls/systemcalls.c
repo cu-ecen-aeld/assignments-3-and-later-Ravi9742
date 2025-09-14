@@ -132,6 +132,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
 	 if (dup2(fd,1)<0){ perror("dup2");}
 	 close(fd);
 	 execv(command[0], command);
+	 exit(EXIT_FAILURE);
     }else {
 	   pid_t pid_wait = wait(&status);
 	   if (pid_wait == -1){ perror("wait");}
