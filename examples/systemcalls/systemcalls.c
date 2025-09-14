@@ -67,7 +67,7 @@ bool do_exec(int count, ...)
  *   as second argument to the execv() command.
  *
 */
-
+   va_end(args);
     int status;
     pid_t pid_wait;
     pid_t pid = fork();
@@ -89,7 +89,6 @@ bool do_exec(int count, ...)
 	    }
     }
 
-    va_end(args);
 
     return WIFEXITED(status) && WEXITSTATUS(status) == 0;
 }
@@ -122,6 +121,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+    va_end(args);
     int status;
     pid_t pid = fork();
     if (pid == -1){perror("fork");}
@@ -141,7 +141,6 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     }
 
 
-    va_end(args);
 
     return WIFEXITED(status) && WEXITSTATUS(status) == 0;
 }
