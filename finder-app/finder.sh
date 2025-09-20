@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # FInder script for AESD assignment 1
 # Author: Ravi Agarwal
 
