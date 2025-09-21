@@ -18,7 +18,7 @@ void* threadfunc(void* thread_param)
    struct thread_data* thread_func_args = (struct thread_data *) thread_param;
    int rc;
 
-   ulseep(thread_func_args->wait_to_obtain_ms*1000);
+   usleep(thread_func_args->wait_to_obtain_ms*1000);
    
    rc = pthread_mutex_lock(thread_func_args->mutex);
    if (rc != 0){
@@ -27,7 +27,7 @@ void* threadfunc(void* thread_param)
 	   pthread_exit(thread_func_args);
    }
  
-   ulseep(thread_func_args->wait_to_release_ms*1000);
+   usleep(thread_func_args->wait_to_release_ms*1000);
    
    rc = pthread_mutex_unlock(thread_func_args->mutex);
 
