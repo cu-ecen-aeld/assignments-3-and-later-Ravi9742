@@ -1,4 +1,4 @@
-CC := $(CROSS_COMPILE)gcc
+CC ?= $(CROSS_COMPILE)gcc
 
 TARGET := writer
 OBJS := writer.o
